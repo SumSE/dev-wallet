@@ -42,28 +42,6 @@ export const actions = {
          data.balance = data.balance ? data.balance : 0
 
          if (data.address !== '') {
-            //Purchase test
-            /*if(false)
-            {
-                xcmgContract.methods.buy().send({from: data.address, value: web3.utils.toWei("10", "ether") }).on('confirmation', async (confirmationNumber, receipt) => {
-                    if(confirmationNumber == 1)
-                    {
-                        console.log(receipt)
- 
-                        const result = await xcmgContract.methods.balanceOf(data.address).call({from: data.address}).catch(() => web3.utils.toWei("0", "ether"))
- 
-                        data.balance = web3.utils.fromWei(result.toString(10), 'ether')
-        
-                        commit('setData', data)
-                    }
-
-                }).on('error', (error) => {
- 
-                    console.error(error)                            
-                    throw new Error('Purchase process failed.')
-                });
-            }*/
-
             if(false) // todo 一時的に無効化
             {
                setTimeout(async () => {
