@@ -36,7 +36,6 @@ build/Release
 
 # Dependency directories
 node_modules/
-node_modules_work/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -78,12 +77,8 @@ dist
 # Serverless directories
 .serverless
 
-.eslintrc.json
-
 # IDE
 .idea
 
 # Service worker
 sw.*
-
-# key
