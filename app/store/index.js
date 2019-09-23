@@ -97,6 +97,16 @@ export const actions = {
         } catch(e) {
             throw e
         }
+    },
+    async updateUserInfo({ commit, state }, userInfo) {
+        try {
+            userInfo.birthday = firebase.firestore.Timestamp.fromDate(userInfo.birthday)
+            await db.collection('xcmg').doc(state.user.uid).update(userInfo)  
+
+            commit('setUserInfo', userInfo)
+        } catch(e) {
+            throw e
+        }
     }
 }
   
@@ -104,6 +114,14 @@ export const getters = {
     isLoading: state => state.isLoading,
     isMenuActive: state => state.isMenuActive,
     user: state => state.user,
-    userInfo: state => state.userInfo,
+    userInfo: state => {
+        if (!state.userInfo) {
+            return null
+        }
+
+        const info = { ...state.userInfo }
+        info.birthday = info.birthday.toDate()
+        return info
+    },
     isAuthenticated: state => !!state.user
 }
