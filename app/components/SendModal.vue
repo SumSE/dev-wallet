@@ -155,7 +155,7 @@ export default {
 
                 await this.$store.dispatch(this.type + '/send', { address: this.address, value: this.value })
             } catch(e) {
-                this.$toast.open({
+                this.$buefy.toast.open({
                     message: e.message,
                     type: 'is-danger'
                 })

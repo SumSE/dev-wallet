@@ -50,7 +50,7 @@ export default {
                 navigator.clipboard
                     .writeText(this.address)
                     .then(() => {
-                        this.$toast.open({
+                        this.$buefy.toast.open({
                             message: "Copied the address",
                             type: 'is-success'
                         })
@@ -60,7 +60,7 @@ export default {
                         throw new Error('Failed to copy to clipboard')
                     })            
             } else {
-                this.$toast.open({
+                this.$buefy.toast.open({
                     message: "copying to clipboard on other than Windows environment is still under development",
                     type: 'is-warning'
                 })
