@@ -14,10 +14,11 @@
                             <b-notification v-if="error" type="is-danger" :closable="false" has-icon>
                                 {{ error }}
                             </b-notification>
+
                             <div class="field">
                                 <div class="control">
                                     <b-field :type="{'is-danger': errors.has('email')}" :message="errors.first('email')">
-                                        <b-input type="email" name="email" icon="email"
+                                        <b-input type="email" name="email" icon="email" 
                                             placeholder="Email" size="is-medium"
                                             data-vv-as="Email" v-validate="'required|email'" v-model="email" />
                                     </b-field>
@@ -27,7 +28,7 @@
                             <div class="field">
                                 <div class="control">
                                     <b-field :type="{'is-danger': errors.has('password')}" :message="errors.first('password')">
-                                        <b-input type="password" name="password" icon="key"
+                                        <b-input type="password" name="password" icon="key" 
                                             placeholder="Password" size="is-medium" password-reveal
                                             data-vv-as="Password" v-validate="'required|min:8'" v-model="password" />
                                     </b-field>
@@ -38,12 +39,66 @@
                                 <div class="control">
                                     <b-field :type="{'is-danger': errors.has('confirm-password')}"
                                         :message="[{
-                                            'Confirm passwordは必須入力です' : errors.firstByRule('confirm-password', 'required'),
-                                            'Confirm passwordがpasswordと一致していません' : errors.firstByRule('confirm-password', 'is')
+                                            'This field is required.' : errors.firstByRule('confirm-password', 'required'),
+                                            '\'Confirm password\' does not match the \'Password\'.' : errors.firstByRule('confirm-password', 'is')
                                         }]">
                                         <b-input type="password" name="confirm-password" icon="key" 
                                             placeholder="Confirm password" size="is-medium" password-reveal
                                             data-vv-as="Confirm password" v-validate="{ required: true, is: password }" v-model="confirmPassword" />
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div v-if="isSignUp" class="field">
+                                <div class="control">
+                                    <b-field :type="{'is-danger': errors.has('name')}" :message="errors.first('name')">
+                                        <b-input name="name" icon="account" @change.native="suppressMultibytesOnChange"
+                                        @keydown.native="suppressMultibytesOnKeyDown"
+                                            placeholder="Name" size="is-medium"
+                                            data-vv-as="Name" v-validate="'required|suppressMultibytes'" v-model="name" inputmode="latin" pattern="[A-Za-z\d\-_,\.\/ ]+" />
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div v-if="isSignUp" class="field">
+                                <div class="control">
+                                    <b-field :type="{'is-danger': errors.has('placeOfResidence')}" :message="errors.first('placeOfResidence')">
+                                        <b-input name="placeOfResidence" icon="pin" @change.native="suppressMultibytesOnChange"
+                                        @keydown.native="suppressMultibytesOnKeyDown"
+                                            placeholder="Address" size="is-medium"
+                                            data-vv-as="placeOfResidence" v-validate="'required|suppressMultibytes'" v-model="placeOfResidence" inputmode="latin" pattern="[A-Za-z\d\-_,\.\/ ]+" />
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div v-if="isSignUp" class="field">
+                                <div class="control">
+                                    <b-field :type="{'is-danger': errors.has('phone')}" :message="errors.first('phone')">
+                                        <b-input type="tel" name="phone" icon="phone" @change.native="suppressMultibytesOnChange"
+                                        @keydown.native="suppressMultibytesOnKeyDown"
+                                            placeholder="Phone" size="is-medium"
+                                            data-vv-as="Phone" v-validate="'required|suppressMultibytes'" v-model="phone" inputmode="latin" pattern="[A-Za-z\d\-_,\.\/ ]+" />
+                                    </b-field>
+                                </div>
+                            </div>
+
+                            <div v-if="isSignUp" class="field">
+                                <div class="control">
+                                    <b-field :type="{'is-danger': errors.has('birthday')}" :message="errors.first('birthday')">
+
+                                        <b-datepicker
+                                            inputmode="latin" pattern="[A-Za-z\d\-_,\.\/ ]+"
+                                            placeholder="Birthday"
+                                            icon="calendar-today"
+                                            size="is-medium"
+                                            name="birthday" 
+                                            data-vv-as="Birthday" 
+                                            v-validate="'required'" 
+                                            v-model="birthday"
+                                            @change.native="suppressMultibytesOnChange"
+                                            @keydown.native="suppressMultibytesOnKeyDown"
+                                            editable>
+                                        </b-datepicker>
                                     </b-field>
                                 </div>
                             </div>
@@ -114,15 +169,33 @@ p {
 
 </style>
 
-<script>
+<script type="text/javascript">
 import { mapActions, mapState, mapGetters } from 'vuex'
+import { Validator } from 'vee-validate'
+
+Validator.extend('suppressMultibytes', {
+  getMessage: field => 'The ' + field + ' cannot contain any multibytes characters.',
+  validate: value => ! /[^A-Za-z\d\-_,\.\/ ]/.test(value)
+});
 
 export default {
     layout: 'normal',
     inject: ['$validator'],
     data() {
+        //var twoDigit = function(value) {
+        //  return ('0' + value).slice(-2);
+        //};
+        //var _today = new Date();
         return {
             isSignUp: false,
+            name: '',
+            placeOfResidence: '',
+            phone: '',
+            birthday: null,/*[
+                _today.getFullYear(),
+                twoDigit(_today.getMonth()+1),
+                twoDigit(_today.getDate())
+            ].join('-'),*/
             email: '',
             password: '',
             confirmPassword: '',
@@ -145,7 +218,18 @@ export default {
             // this.$root.$loading.start()
 
             try {
-                let info = { email: this.email, password: this.password }
+                let extraInfo = {
+                    name: this.name, 
+                    placeOfResidence: this.placeOfResidence,
+                    phone: this.phone,
+                    birthday: this.birthday
+                }
+
+                let info = {
+                    email: this.email, 
+                    password: this.password, 
+                    extraInfo: extraInfo
+                }
 
                 if (this.isSignUp) {
                     await this.signup(info)
@@ -158,6 +242,23 @@ export default {
                 this.error = e.message
             }
         },
+        suppressMultibytesOnChange(event)
+        {
+            var str = event.target.value
+            while(str.match(/[^A-Za-z\d\-_,\.\/ ]/))
+            {
+                str = str.replace(/[^A-Za-z\d\-_,\.\/ ]/g, "")
+            }
+            event.target.value = str            
+        },
+        suppressMultibytesOnKeyDown(event)
+        {
+            if(/[^A-Za-z\d\-_,\.\/ ]/.test(event.key))
+            {
+                event.preventDefault()
+                return false
+            }
+        }        
     }
 }
 </script>
