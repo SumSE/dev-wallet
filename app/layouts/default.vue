@@ -4,7 +4,7 @@
             <div class="navbar-brand">
                 <nuxt-link to="/" class="navbar-item">
                     <b-icon icon="coins" size="is-medium" type="is-white"></b-icon>
-                    <div class="logo-title">XCM</div>
+                    <div class="logo-title">XCMG</div>
                 </nuxt-link>
                 <a role="button" class="navbar-burger" data-target="navMenu" 
                     @click="toggleMenu" :class="{ 'is-active': isMenuActive }"
@@ -33,7 +33,7 @@
                             </figure>
                             <div class="media-content">
                                 <div class="content avator-name">
-                                    <p>{{ username }}</p>
+                                    <p>{{ userName }}</p>
                                 </div>
                             </div>
                         </article>
@@ -47,7 +47,20 @@
                 </div>
             </div>
         </nav>
-        <nuxt />
+        <section v-if="user && !user.emailVerified">
+            <div class="box">
+                <div class="field">
+                    A confirmation email was sent.
+                    Please click the link on the email to start using the wallet.
+                </div>
+                <div class="field">
+                    <button v-if="!mailSent" class="button is-block is-info" @click.prevent="handleResend">Request to resend</button>
+                </div>
+            </div>
+        </section>
+        <section v-if="user && user.emailVerified">
+            <nuxt />
+        </section>
         <b-loading :is-full-page="true" :active.sync="isLoading" :can-cancel="false"></b-loading>
     </div>
 </template>
@@ -69,16 +82,14 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
     data() {
-        return {}
+        return { mailSent: false }
     },
     mounted() {
         this.resetMenu()
     },
     computed: {
-        ...mapGetters(['isMenuActive', 'isLoading', 'user']),
-        username() {
-            return this.user.email.split('@')[0]
-        }
+        ...mapGetters(['isMenuActive', 'isLoading', 'user', 'userInfo']),
+        userName() { return this.userInfo ? this.userInfo.name : this.user.email.split('@')[0] }
     },
     methods : {
         ...mapActions(['toggleMenu', 'resetMenu', 'signout']),
@@ -90,6 +101,12 @@ export default {
             } catch(e) {
                 console.log(e);
             }
+        },
+        async handleResend()
+        {
+            await this.user.sendEmailVerification({ url: window.location.origin })
+
+            this.mailSent = true
         }
     }
 }

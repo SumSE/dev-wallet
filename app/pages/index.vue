@@ -9,10 +9,10 @@
                         </figure>
                         <div class="title-container">
                             <h1 class="title">
-                                Welcome! XCM
+                                Welcome! XCMG
                             </h1>
                             <h2 class="subtitle">
-                                about XCM .....
+                                about XCMG .....
                             </h2>
                         </div>
                     </div>
@@ -22,10 +22,7 @@
         <section class="section">
             <div class="columns">
                 <div class="column is-6">
-                    <coin title="XCM" icon="coin" type="xcm" />
-                </div>
-                <div class="column is-6">
-                    <coin title="BitCoin" icon="bitcoin" type="bitcoin" />
+                    <coin title="XCMG" icon="coin" type="xcm" />
                 </div>
             </div>
         </section>
@@ -63,9 +60,9 @@ import Coin from '~/components/Coin'
 
 export default {
     async fetch ({ store, params }) {
-        // Coinコンポーネント側でfetchが起こらない
-        await store.dispatch('xcm/load')
-        await store.dispatch('bitcoin/load')
+
+        await store.dispatch('xcm/load')        
+        //await store.dispatch('bitcoin/load')
     },
     components: {
         Coin

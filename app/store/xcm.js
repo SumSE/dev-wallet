@@ -8,6 +8,6 @@ export const state = () => (_.cloneDeep(baseState()))
 export const mutations = _.cloneDeep(baseMutations)
   
 export const actions = _.cloneDeep(baseActions)
-actions.collection = () => db.collection('xcm')
+actions.collection = () => db.collection('xcmg')
 
 export const getters = _.cloneDeep(baseGetters)

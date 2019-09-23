@@ -59,13 +59,20 @@ module.exports = {
     ['nuxt-buefy', {
       css: false,
       // materialDesignIcons: false
-    }]
+    }],
+    // for debugging
+    '@nuxtjs/sentry'
   ],
   /*
   ** Axios module configuration
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+
+  // for debugging
+  sentry: { 
+    dsn: 'https://b61d79c16ac14136889afe5cb39b2ba8@sentry.io/1477695' 
   },
 
   /*

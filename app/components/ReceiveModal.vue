@@ -25,7 +25,7 @@
         </section>
         <footer class="modal-card-foot">
             <button class="button" type="button" @click="$parent.close()">Close</button>
-            <button class="button is-primary">Copy</button>
+            <button class="button is-primary" @click="copyToClipboard">Copy</button>
         </footer>
     </div>
 </template>
@@ -43,5 +43,29 @@ export default {
             required: true
         },
     },
+    methods: {
+        copyToClipboard() {
+            if(navigator && navigator.clipboard && navigator.clipboard.writeText)
+            {
+                navigator.clipboard
+                    .writeText(this.address)
+                    .then(() => {
+                        this.$toast.open({
+                            message: "Copied the address",
+                            type: 'is-success'
+                        })
+                    })                
+                    .catch(e => {
+                        console.error(e)
+                        throw new Error('Failed to copy to clipboard')
+                    })            
+            } else {
+                this.$toast.open({
+                    message: "copying to clipboard on other than Windows environment is still under development",
+                    type: 'is-warning'
+                })
+            }
+        }
+    }
 }
 </script>
