@@ -104,74 +104,70 @@
 </template>
 
 <script>
-import { Validator } from 'vee-validate'
-import { mapActions } from 'vuex'
+import { Validator } from "vee-validate";
+import { mapActions } from "vuex";
 
-Validator.extend('suppressMultibytes', {
-  getMessage: field => 'The ' + field + ' cannot contain any multibytes characters.',
-  validate: value => ! /[^A-Za-z\d\-_,\.\/ ]/.test(value)
+Validator.extend("suppressMultibytes", {
+  getMessage: field =>
+    "The " + field + " cannot contain any multibytes characters.",
+  validate: value => !/[^A-Za-z\d\-_,\.\/ ]/.test(value)
 });
 
 export default {
-    inject: ['$validator'],
-    props: {
-        userInfo: {
-            type: Object,
-            required: true
-        }
-    },
-    data() {
-        return {
-            error: '',
-        }
-    },
-    methods: {
-        ...mapActions(['loading', 'updateUserInfo']),
-        async handleSubmit()
-        {
-            this.loading(true)
-
-            try {
-                await this.updateUserInfo(this.userInfo)
-            } catch(e) {
-                this.$buefy.toast.open({
-                    message: e.message,
-                    type: 'is-danger'
-                })
-            }
-
-            this.$parent.close()
-
-            this.loading(false)
-
-        },
-        suppressMultibytesOnChange(event)
-        {
-            var str = event.target.value
-            while(str.match(/[^A-Za-z\d\-_,\.\/ ]/))
-            {
-                str = str.replace(/[^A-Za-z\d\-_,\.\/ ]/g, "")
-            }
-            event.target.value = str            
-        },
-        suppressMultibytesOnKeyDown(event)
-        {
-            if(/[^A-Za-z\d\-_,\.\/ ]/.test(event.key))
-            {
-                event.preventDefault()
-                return false
-            }
-        }        
+  inject: ["$validator"],
+  props: {
+    userInfo: {
+      type: Object,
+      required: true
     }
-}
+  },
+  data() {
+    return {
+      error: ""
+    };
+  },
+  methods: {
+    ...mapActions(["loading", "updateUserInfo"]),
+    async handleSubmit() {
+      this.loading(true);
+
+      try {
+        await this.updateUserInfo(this.userInfo);
+      } catch (e) {
+        this.$buefy.toast.open({
+          message: e.message,
+          type: "is-danger"
+        });
+      }
+
+      this.$parent.close();
+
+      this.loading(false);
+    },
+    suppressMultibytesOnChange(event) {
+      var str = event.target.value;
+      while (str.match(/[^A-Za-z\d\-_,\.\/ ]/)) {
+        str = str.replace(/[^A-Za-z\d\-_,\.\/ ]/g, "");
+      }
+      event.target.value = str;
+    },
+    suppressMultibytesOnKeyDown(event) {
+      if (/[^A-Za-z\d\-_,\.\/ ]/.test(event.key)) {
+        event.preventDefault();
+        return false;
+      }
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .modal-card {
-    /deep/ {
-        .dropdown.is-active .dropdown-menu, .dropdown.is-hoverable:hover .dropdown-menu {
-            display: contents;
-        }
+  /deep/ {
+    .dropdown.is-active .dropdown-menu,
+    .dropdown.is-hoverable:hover .dropdown-menu {
+      display: contents;
     }
+  }
 }
 </style>
