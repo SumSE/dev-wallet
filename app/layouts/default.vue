@@ -114,13 +114,13 @@ export default {
         openUpdateUserModal()
         {
             this.$buefy.modal.open({
-            parent: this,
-            component: UpdateUserModal,
-            hasModalCard: true,
-            width: 520,
-            props: {
-                userInfo: this.userInfo
-            }
+                parent: this,
+                component: UpdateUserModal,
+                hasModalCard: true,
+                width: 520,
+                props: {
+                    userInfo: this.userInfo
+                }
             });
         }
     }
