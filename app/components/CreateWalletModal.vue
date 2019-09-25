@@ -56,7 +56,7 @@ export default {
             try {
                 await this.$store.dispatch(this.type + '/createWallet', [this.wordItems1.concat(this.wordItems2)])
             } catch(e) {
-                this.$toast.open({
+                this.$buefy.toast.open({
                     message: e.message,
                     type: 'is-danger'
                 })

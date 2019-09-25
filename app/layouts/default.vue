@@ -25,18 +25,20 @@
 
                 <div class="navbar-end">
                     <div class="navbar-item">
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-32x48">
-                                    <img src="https://bulma.io/images/placeholders/32x32.png">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content avator-name">
-                                    <p>{{ userName }}</p>
+                        <button class="button is-dark" @click.prevent="openUpdateUserModal">
+                            <article class="media">
+                                <figure class="media-left">
+                                    <p class="image is-32x48">
+                                        <img src="https://bulma.io/images/placeholders/32x32.png">
+                                    </p>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content avator-name">
+                                        <p>{{ userName }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
+                            </article>
+                        </button>
                     </div>
                     <div class="navbar-item">
                         <button class="button is-dark" @click.prevent="handleSignout">
@@ -79,6 +81,7 @@
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import UpdateUserModal from "~/components/UpdateUserModal";
 
 export default {
     data() {
@@ -107,6 +110,18 @@ export default {
             await this.user.sendEmailVerification({ url: window.location.origin })
 
             this.mailSent = true
+        },
+        openUpdateUserModal()
+        {
+            this.$buefy.modal.open({
+                parent: this,
+                component: UpdateUserModal,
+                hasModalCard: true,
+                width: 520,
+                props: {
+                    userInfo: this.userInfo
+                }
+            });
         }
     }
 }

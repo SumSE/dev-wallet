@@ -148,7 +148,7 @@ export default {
       this.balanceUSD = +bal * +usdInfo;
     },
     openCreateWalletModal() {
-      this.$modal.open({
+      this.$buefy.modal.open({
         parent: this,
         component: CreateWalletModal,
         hasModalCard: true,
@@ -158,7 +158,7 @@ export default {
       });
     },
     openReceiveModal() {
-      this.$modal.open({
+      this.$buefy.modal.open({
         parent: this,
         component: ReceiveModal,
         hasModalCard: true,
@@ -168,7 +168,7 @@ export default {
       });
     },
     openSendModal() {
-      this.$modal.open({
+      this.$buefy.modal.open({
         parent: this,
         component: SendModal,
         hasModalCard: true,
