@@ -116,9 +116,8 @@
                     <p class="has-text-grey">
                         <a v-if="!isSignUp" @click="changeSignUp">Sign up</a>
                         <a v-if="isSignUp" @click="changeSignUp">Sign in</a>
-                        <!-- <a href="../">Sign Up</a> &nbsp;·&nbsp; -->
-                        <!-- <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                        <a href="../">Need Help?</a> -->
+                        <a @click="forgotPassword">·&nbsp;Forgot Password</a>
+                        <!-- <a href="../">·&nbsp;Need Help?</a> -->
                     </p>
                 </div>
             </div>
@@ -206,7 +205,7 @@ export default {
         ...mapGetters(['isAuthenticated', 'user'])
     },
     methods : {
-        ...mapActions(['setUser', 'signin', 'signup', 'loading']),
+        ...mapActions(['setUser', 'signin', 'signup', 'loading', 'resetPassword']),
         changeSignUp() {
             this.isSignUp = !this.isSignUp
         },
@@ -258,7 +257,17 @@ export default {
                 event.preventDefault()
                 return false
             }
-        }        
+        },
+        async forgotPassword()
+        {
+            if(!this.email) {
+                // TODO 「メールアドレスを入力してください」的なモーダルを出す？
+                return
+            }
+            // TODO 「〇〇@xx.xxにメールを送信します」的なモーダルを出す？
+            await this.resetPassword(this.email)
+            // TODO 「送信しました」的なモーダルを出す？
+        }
     }
 }
 </script>
