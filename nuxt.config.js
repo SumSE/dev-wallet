@@ -42,6 +42,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '@/plugins/axios', ssr: false },
     { src: '@/plugins/vee-validate', ssr: false },
     '@/plugins/firebase',
     '@/plugins/auth',
@@ -68,6 +69,12 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    proxy: true,
+  },
+
+  proxy: {
+    '/ataix/': {target: 'https://api.ataix.com/api/prices/XCMG-BTC', pathRewrite: {'^/ataix/': '/'}},
+    '/bitfinex/': {target: 'https://api-pub.bitfinex.com/v2/ticker/tBTCUSD', pathRewrite: {'^/bitfinex/': '/'}}
   },
 
   // for debugging

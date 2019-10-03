@@ -114,6 +114,19 @@ export const actions = {
         } catch (e) {
             throw e
         }
+    },
+    async getBalanceUSD(_, balance) {
+        try {
+            const results = await Promise.all([
+                this.$axios.get('/ataix/'),
+                this.$axios.get('/bitfinex/')
+            ])
+            const xcmgToBtc = results[0].data.result[0].ask
+            const btcToUsd = results[1].data[7]
+            return balance * xcmgToBtc * btcToUsd
+        } catch (e) {
+            throw e
+        }
     }
 }
   
