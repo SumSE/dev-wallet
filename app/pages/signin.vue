@@ -171,6 +171,7 @@ p {
 <script type="text/javascript">
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { Validator } from 'vee-validate'
+import ResetPasswordModal from "~/components/ResetPasswordModal";
 
 Validator.extend('suppressMultibytes', {
   getMessage: field => 'The ' + field + ' cannot contain any multibytes characters.',
@@ -260,13 +261,14 @@ export default {
         },
         async forgotPassword()
         {
-            if(!this.email) {
-                // TODO 「メールアドレスを入力してください」的なモーダルを出す？
-                return
-            }
-            // TODO 「〇〇@xx.xxにメールを送信します」的なモーダルを出す？
-            await this.resetPassword(this.email)
-            // TODO 「送信しました」的なモーダルを出す？
+            this.$buefy.modal.open({
+                parent: this,
+                component: ResetPasswordModal,
+                hasModalCard: true,
+                props: {
+                    email: this.email
+                }
+            });
         }
     }
 }
