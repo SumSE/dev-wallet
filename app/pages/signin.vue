@@ -206,7 +206,7 @@ export default {
         ...mapGetters(['isAuthenticated', 'user'])
     },
     methods : {
-        ...mapActions(['setUser', 'signin', 'signup', 'loading', 'resetPassword']),
+        ...mapActions(['setUser', 'signin', 'signup', 'loading']),
         changeSignUp() {
             this.isSignUp = !this.isSignUp
         },
