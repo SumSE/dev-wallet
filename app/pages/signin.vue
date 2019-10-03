@@ -116,9 +116,8 @@
                     <p class="has-text-grey">
                         <a v-if="!isSignUp" @click="changeSignUp">Sign up</a>
                         <a v-if="isSignUp" @click="changeSignUp">Sign in</a>
-                        <!-- <a href="../">Sign Up</a> &nbsp;·&nbsp; -->
-                        <!-- <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                        <a href="../">Need Help?</a> -->
+                        <a @click="forgotPassword">·&nbsp;Forgot Password</a>
+                        <!-- <a href="../">·&nbsp;Need Help?</a> -->
                     </p>
                 </div>
             </div>
@@ -172,6 +171,7 @@ p {
 <script type="text/javascript">
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { Validator } from 'vee-validate'
+import ResetPasswordModal from "~/components/ResetPasswordModal";
 
 Validator.extend('suppressMultibytes', {
   getMessage: field => 'The ' + field + ' cannot contain any multibytes characters.',
@@ -258,7 +258,18 @@ export default {
                 event.preventDefault()
                 return false
             }
-        }        
+        },
+        async forgotPassword()
+        {
+            this.$buefy.modal.open({
+                parent: this,
+                component: ResetPasswordModal,
+                hasModalCard: true,
+                props: {
+                    email: this.email
+                }
+            });
+        }
     }
 }
 </script>

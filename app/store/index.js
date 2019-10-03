@@ -107,6 +107,13 @@ export const actions = {
         } catch(e) {
             throw e
         }
+    },
+    async resetPassword(_, emailAddress) {
+        try {
+            await firebase.auth().sendPasswordResetEmail(emailAddress)
+        } catch (e) {
+            throw e
+        }
     }
 }
   
