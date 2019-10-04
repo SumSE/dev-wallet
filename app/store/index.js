@@ -127,7 +127,15 @@ export const getters = {
         }
 
         const info = { ...state.userInfo }
-        info.birthday = info.birthday.toDate()
+
+        // 初期の頃の実装の名残でbirthdayがstring型で入っている場合とtimestamp型で入っている場合があるので分岐する
+        if(typeof info.birthday === 'string') {
+            // string型で日付が入っている場合はnew Date()でDate型に変換する
+            info.birthday = new Date(info.birthday)
+        } else {
+            // firestoreのtimestamp型の場合はtoDate()を使ってDate型に変換する
+            info.birthday = info.birthday.toDate()
+        }
         return info
     },
     isAuthenticated: state => !!state.user

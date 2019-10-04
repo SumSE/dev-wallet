@@ -4,7 +4,7 @@
       <p class="modal-card-title">Update User</p>
     </header>
     <section class="modal-card-body">
-      <form>
+      <form @submit.prevent="handleSubmit">
         <b-notification v-if="error" type="is-danger" :closable="false" has-icon>{{ error }}</b-notification>
 
         <div class="field">
@@ -19,7 +19,7 @@
                 size="is-medium"
                 data-vv-as="Name"
                 v-validate="'required|suppressMultibytes'"
-                v-model="userInfo.name"
+                v-model="name"
                 inputmode="latin"
                 pattern="[A-Za-z\d\-_,\.\/ ]+"
               />
@@ -42,7 +42,7 @@
                 size="is-medium"
                 data-vv-as="placeOfResidence"
                 v-validate="'required|suppressMultibytes'"
-                v-model="userInfo.placeOfResidence"
+                v-model="placeOfResidence"
                 inputmode="latin"
                 pattern="[A-Za-z\d\-_,\.\/ ]+"
               />
@@ -63,7 +63,7 @@
                 size="is-medium"
                 data-vv-as="Phone"
                 v-validate="'required|suppressMultibytes'"
-                v-model="userInfo.phone"
+                v-model="phone"
                 inputmode="latin"
                 pattern="[A-Za-z\d\-_,\.\/ ]+"
               />
@@ -86,7 +86,7 @@
                 name="birthday"
                 data-vv-as="Birthday"
                 v-validate="'required'"
-                v-model="userInfo.birthday"
+                v-model="birthday"
                 @change.native="suppressMultibytesOnChange"
                 @keydown.native="suppressMultibytesOnKeyDown"
                 editable
@@ -97,7 +97,7 @@
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button class="button" type="button" @click="$parent.close()">Close</button>
+      <button class="button" type="button" @click="$parent.close()">Cancel</button>
       <button class="button is-primary" @click.prevent="handleSubmit">Save</button>
     </footer>
   </div>
@@ -123,16 +123,29 @@ export default {
   },
   data() {
     return {
+      name: this.userInfo.name,
+      placeOfResidence: this.userInfo.placeOfResidence,
+      phone: this.userInfo.phone,
+      birthday: this.userInfo.birthday,
       error: ""
     };
   },
   methods: {
     ...mapActions(["loading", "updateUserInfo"]),
     async handleSubmit() {
+      let result = await this.$validator.validateAll()
+
+      if (!result) return
+
       this.loading(true);
 
       try {
-        await this.updateUserInfo(this.userInfo);
+        await this.updateUserInfo({
+          name: this.name,
+          placeOfResidence: this.placeOfResidence,
+          phone: this.phone,
+          birthday: this.birthday,
+        });
       } catch (e) {
         this.$buefy.toast.open({
           message: e.message,
