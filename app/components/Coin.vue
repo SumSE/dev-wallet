@@ -104,6 +104,7 @@ button {
 </style>
 
 <script>
+import { mapActions } from "vuex";
 import CreateWalletModal from "~/components/CreateWalletModal";
 import ReceiveModal from "~/components/ReceiveModal";
 import SendModal from "~/components/SendModal";
@@ -141,11 +142,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["getBalanceUSD"]),
     async updateBalanceUSD(bal) {
-      const usdInfo = await this.$axios.$get(
-        "https://wallet.tokenxcmg.com/eurusdinfo.txt"
-      );
-      this.balanceUSD = +bal * +usdInfo;
+      this.balanceUSD = await this.getBalanceUSD(bal)
     },
     openCreateWalletModal() {
       this.$buefy.modal.open({
