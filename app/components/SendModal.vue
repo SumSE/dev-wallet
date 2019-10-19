@@ -93,7 +93,7 @@ button {
         margin-left: 2.5em;
         margin-right: 2.5em;
         .address {
-            font-size: 1.25rem;
+            font-size: 1.0rem;
             margin-left: 10px;
             word-wrap: break-word;
         }
@@ -155,7 +155,7 @@ export default {
 
                 await this.$store.dispatch(this.type + '/send', { address: this.address, value: this.value })
             } catch(e) {
-                this.$toast.open({
+                this.$buefy.toast.open({
                     message: e.message,
                     type: 'is-danger'
                 })

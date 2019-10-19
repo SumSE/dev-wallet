@@ -1,13 +1,16 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 if (!firebase.apps.length) {
     firebase.initializeApp({
-        apiKey: "AIzaSyD8GCCC8UemY69XYFLs8UZla8BAK7jHFDQ",
-        authDomain: "wallet-1ce6d.firebaseapp.com",
-        databaseURL: "https://wallet-1ce6d.firebaseio.com",
-        projectId: "wallet-1ce6d",
-        storageBucket: "wallet-1ce6d.appspot.com",
-        messagingSenderId: "1057402098480"
+        apiKey: "AIzaSyChCFT72Kw2kqRT5bOS0G_e3N6he_582I8",
+        authDomain: "xcmg-38996.firebaseapp.com",
+        databaseURL: "https://xcmg-38996.firebaseio.com",
+        projectId: "xcmg-38996",
+        storageBucket: "xcmg-38996.appspot.com",
+        messagingSenderId: "547907806647",
+        appId: "1:547907806647:web:be2f1c82c2974963"                
     })
 }
 
