@@ -24,6 +24,9 @@
                 <div class="column is-6">
                     <coin title="XCMG" icon="coin" type="xcm" />
                 </div>
+                <div class="column is-6">
+                    <coin title="ETH" icon="coin" type="eth" />
+                </div>
             </div>
         </section>
     </div>
